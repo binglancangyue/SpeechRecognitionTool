@@ -20,6 +20,8 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            // Zipalign压缩优化
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
