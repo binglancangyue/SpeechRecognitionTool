@@ -10,7 +10,7 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="txz_wake_up_name">你好小海</string>
+    <string name="txz_wake_up_name">比心</string>
     <string name="app_not_install">该应用尚未安装!</string>
 
 </resources>
