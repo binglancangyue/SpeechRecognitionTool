@@ -71,5 +71,6 @@ public class SpeechRecognitionService extends Service {
     public void onDestroy() {
         super.onDestroy();
         unregisterTXZReceiver();
+        stopForeground(true);
     }
 }

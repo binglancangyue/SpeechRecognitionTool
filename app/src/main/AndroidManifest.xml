@@ -24,6 +24,7 @@
         android:name=".SpeechApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:persistent="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -43,8 +44,11 @@
         <!--Service-->
         <service
             android:name=".SpeechRecognitionService"
-            android:exported="true" />
-
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="com.bixin.speechrecognitiontool.action_service" />
+            </intent-filter>
+        </service>
 
         <service
             android:name="com.txznet.sdk.TXZService"
