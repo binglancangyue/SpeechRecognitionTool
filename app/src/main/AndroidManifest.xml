@@ -19,13 +19,15 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:name=".SpeechApplication"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_speech"
         android:label="@string/app_name"
         android:persistent="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_speech_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 

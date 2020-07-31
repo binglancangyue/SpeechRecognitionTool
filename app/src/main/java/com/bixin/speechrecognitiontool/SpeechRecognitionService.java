@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 
 import com.bixin.speechrecognitiontool.mode.CustomValue;
 import com.bixin.speechrecognitiontool.txz.TXZBroadcastReceiver;
+import com.bixin.speechrecognitiontool.txz.TXZManagerTool;
 
 /**
  * @author Altair
@@ -35,6 +36,14 @@ public class SpeechRecognitionService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "SpeechRecognitionService onCreate: ");
+        TXZManagerTool.iniTxz();
+        mTxzBroadcastReceiver = new TXZBroadcastReceiver();
+        registerTXZReceiver();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
         NotificationManager notificationManager =
                 (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID_STRING,
@@ -44,8 +53,7 @@ public class SpeechRecognitionService extends Service {
         Notification notification = new Notification.Builder(getApplicationContext(),
                 CHANNEL_ID_STRING).build();
         startForeground(1, notification);
-        mTxzBroadcastReceiver = new TXZBroadcastReceiver();
-        registerTXZReceiver();
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Nullable
@@ -69,8 +77,9 @@ public class SpeechRecognitionService extends Service {
 
     @Override
     public void onDestroy() {
+        stopForeground(true);
         super.onDestroy();
         unregisterTXZReceiver();
-        stopForeground(true);
     }
+
 }

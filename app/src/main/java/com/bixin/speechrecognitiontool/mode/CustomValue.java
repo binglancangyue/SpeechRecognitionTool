@@ -11,7 +11,7 @@ public class CustomValue {
 
     public final static String PACKAGE_NAME_XIMALAYA = "com.ximalaya.ting.android.car";//喜马拉雅
     public final static String PACKAGE_NAME_KAOLA = "com.hdsc.edog";// 电子狗 // com.edog.car
-    public static final String PACKAGE_NAME_FILE_MANAGER = "com.cywl.launcher.documentmanagement";
+    public static final String PACKAGE_NAME_FILE_MANAGER = "com.cywl.launcher.filemanager";
     public static final String PACKAGE_NAME_ViDEO_PLAY_BACK = "com.bixin.bxvideolist";// 视频回放
     public static final String PACKAGE_NAME_TV_HOME = "com.dianshijia.newlive";
     public static final String PACKAGE_NAME_FM = "com.bixin.bxfm"; // FM

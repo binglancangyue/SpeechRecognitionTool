@@ -19,7 +19,7 @@ public class SpeechApplication extends MultiDexApplication {
         super.onCreate();
         mApplication = this;
         Log.d("SpeechApplication", "SpeechApplication onCreate: ");
-        TXZManagerTool.iniTxz();
+//        TXZManagerTool.iniTxz();
     }
 
     public static SpeechApplication getInstance() {

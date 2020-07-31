@@ -16,20 +16,18 @@ import com.txznet.sdk.TXZAsrManager;
  */
 public class TXZBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = "TXZBroadcastReceiver";
-    private TXZCommand mTXZCommand;
     private SettingsFunctionTool settingsFunctionTool;
 
     public TXZBroadcastReceiver() {
-        this.mTXZCommand = new TXZCommand();
         this.settingsFunctionTool = new SettingsFunctionTool();
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        Log.d(TAG, "onReceive:action " + action);
         if (action != null && action.equals(CustomValue.ACTION_TXZ_SEND)) {
             String actionString = intent.getStringExtra("action");
+            Log.d(TAG, "onReceive:actionString " + actionString);
             switch (actionString) {
                 case "light.up":
                     sendToActivity(1, 20);
@@ -111,8 +109,9 @@ public class TXZBroadcastReceiver extends BroadcastReceiver {
     private void sendToActivity(int type, int value) {
         switch (type) {
             case 1:
-            case 2:
                 settingsFunctionTool.updateBrightness(value);
+            case 2:
+                settingsFunctionTool.updateVolume(value);
                 break;
             case 3:
                 settingsFunctionTool.setWifiStatue(value);

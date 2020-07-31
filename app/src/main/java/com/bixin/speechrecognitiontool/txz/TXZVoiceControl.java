@@ -21,7 +21,7 @@ public class TXZVoiceControl {
     }
 
     /**
-     * 注册语音命令
+     * 注册唤醒状态语音命令
      *
      * @param commands 命令
      * @param data     命令标识
@@ -72,7 +72,7 @@ public class TXZVoiceControl {
             case "CMD_OPEN_APP_MGT":
 //                openApp(null);
                 startActivity();
-                toSpeakText("APP管理已打开");
+                toSpeakText("应用管理已打开");
                 break;
             case "CMD_OPEN_FILE_MGT":
                 openApp(CustomValue.PACKAGE_NAME_FILE_MANAGER);
