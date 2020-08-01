@@ -18,6 +18,8 @@ import androidx.annotation.RequiresApi;
 import com.bixin.speechrecognitiontool.mode.CustomValue;
 import com.bixin.speechrecognitiontool.txz.TXZBroadcastReceiver;
 import com.bixin.speechrecognitiontool.txz.TXZManagerTool;
+import com.txznet.sdk.TXZNetDataProvider;
+import com.txznet.sdk.bean.WeatherData;
 
 /**
  * @author Altair
@@ -39,6 +41,7 @@ public class SpeechRecognitionService extends Service {
         TXZManagerTool.iniTxz();
         mTxzBroadcastReceiver = new TXZBroadcastReceiver();
         registerTXZReceiver();
+        getWeatherInfo();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -73,6 +76,24 @@ public class SpeechRecognitionService extends Service {
         if (mTxzBroadcastReceiver != null) {
             unregisterReceiver(mTxzBroadcastReceiver);
         }
+    }
+
+    private void getWeatherInfo() {
+        TXZNetDataProvider.getInstance().getWeatherInfo(new TXZNetDataProvider.NetDataCallback<WeatherData>() {
+            @Override
+            public void onResult(WeatherData weatherData) {
+                String cityName = weatherData.cityName;
+                String tts = weatherData.tts;
+                int focusDateIndex = weatherData.focusDateIndex;
+//                String time=weatherData.updateTime;
+                Log.d("txz", "onResult:weatherData " + weatherData.toString());
+            }
+
+            @Override
+            public void onError(int i) {
+                Log.e("txz", "onError code : " + i);
+            }
+        });
     }
 
     @Override

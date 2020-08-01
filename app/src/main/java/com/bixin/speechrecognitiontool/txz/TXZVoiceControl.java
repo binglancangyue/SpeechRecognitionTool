@@ -10,7 +10,9 @@ import com.bixin.speechrecognitiontool.R;
 import com.bixin.speechrecognitiontool.SpeechApplication;
 import com.bixin.speechrecognitiontool.mode.CustomValue;
 import com.txznet.sdk.TXZAsrManager;
+import com.txznet.sdk.TXZNetDataProvider;
 import com.txznet.sdk.TXZTtsManager;
+import com.txznet.sdk.bean.WeatherData;
 
 public class TXZVoiceControl {
     private static final String ACTION_TXZ_CUSTOM_COMMAND = "com.bixin.txz.command";
@@ -106,6 +108,8 @@ public class TXZVoiceControl {
                 break;
         }
     }
+
+
 
     private void sendBroadcastToLauncher(String command) {
         Intent intent = new Intent();
