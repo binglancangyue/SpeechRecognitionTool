@@ -39,7 +39,7 @@ public class TXZBroadcastReceiver extends BroadcastReceiver {
                     sendToActivity(1, 100);
                     break;
                 case "light.min":
-                    sendToActivity(1, 0);
+                    sendToActivity(1, 1);
                     break;
                 case "volume.up":
                     sendToActivity(2, 3);
@@ -90,6 +90,9 @@ public class TXZBroadcastReceiver extends BroadcastReceiver {
         }
         if (action.equals(CustomValue.ACTION_OPEN_TXZ_VIEW)) {
             openTXZView();
+        }
+        if (action.equals(CustomValue.ACTION_GET_WEATHER)) {
+            TXZManagerTool.getWeatherInfo();
         }
     }
 

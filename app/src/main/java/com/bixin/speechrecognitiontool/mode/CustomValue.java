@@ -20,4 +20,7 @@ public class CustomValue {
     public static final String PACKAGE_NAME_ACTIVITY = PACKAGE_NAME_LAUNCHER + ".activity" +
             ".AppListActivity";
     public final static String ACTION_OPEN_TXZ_VIEW = "com.bixin.launcher_t20.txz.open";
+    public final static String ACTION_UPDATE_WEATHER = "com.bixin.speechrecognitiontool.action_update_weather";
+    public final static String ACTION_GET_WEATHER = "com.bixin.speechrecognitiontool.action_get_weather";
+
 }

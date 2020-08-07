@@ -95,12 +95,33 @@ public class AsrWakeUpInitManager {
                                 true, null);
                         sendBroadCast("bluetooth.close");
                         break;
+                    case "VOLUME_MAX":
+                        TXZTtsManager.getInstance().speakText("滴");
+                        TXZResourceManager.getInstance().speakTextOnRecordWin("已调至最大音量",
+                                true, null);
+                        sendBroadCast("volume.max");
+                        break;
+                    case "VOLUME_MIN":
+                        TXZTtsManager.getInstance().speakText("滴");
+                        TXZResourceManager.getInstance().speakTextOnRecordWin("已调至最小音量",
+                                true, null);
+                        sendBroadCast("volume.min");
+                        break;
+                    case "VOLUME_MUTE":
+                        TXZTtsManager.getInstance().speakText("滴");
+                        TXZResourceManager.getInstance().speakTextOnRecordWin("已为您静音",
+                                true, null);
+                        sendBroadCast("volume.mute");
+                        break;
                 }
             }
         }.addCommand("LIGHT_DOWN", "降低亮度", "减小亮度")
                 .addCommand("LIGHT_UP", "增加亮度", "提高亮度")
                 .addCommand("LIGHT_MAX", "最大亮度")
                 .addCommand("LIGHT_MIN", "最小亮度")
+                .addCommand("VOLUME_MAX", "最大音量")
+                .addCommand("VOLUME_MUTE", "静音")
+                .addCommand("VOLUME_MIN", "最小音量")
                 .addCommand("WIFI_CLOSE", "关闭WIFI")
                 .addCommand("WIFI_OPEN", "打开WIFI")
                 .addCommand("BLUETOOTH_OPEN", "打开蓝牙")

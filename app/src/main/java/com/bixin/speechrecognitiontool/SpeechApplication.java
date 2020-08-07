@@ -4,8 +4,6 @@ import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
-import com.bixin.speechrecognitiontool.txz.TXZManagerTool;
-
 /**
  * @author Altair
  * @date :2020.03.23 上午 10:36

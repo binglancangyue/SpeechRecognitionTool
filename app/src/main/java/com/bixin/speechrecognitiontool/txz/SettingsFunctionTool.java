@@ -405,7 +405,12 @@ public class SettingsFunctionTool {
     public int updateBrightness(int value) {
         int currentBrightness = getScreenBrightnessPercentageValue();
         final int maxValue = 100;
-        currentBrightness += value;
+        if (value == 1) {
+            currentBrightness = 1;
+        } else {
+            currentBrightness += value;
+        }
+
         if (currentBrightness < 0) {
             currentBrightness = 0;
         }
@@ -419,8 +424,12 @@ public class SettingsFunctionTool {
     public int updateVolume(int value) {
         final int maxValue = 15;
         int currentVolume = getCurrentVolume();
-
-        currentVolume = currentVolume + value;
+        Log.d(TAG, "updateVolume:currentVolume " + currentVolume + " value " + value);
+        if (value == 1 || value == 0) {
+            currentVolume = value;
+        } else {
+            currentVolume = currentVolume + value;
+        }
         if (currentVolume < 0) {
             currentVolume = 0;
         }
@@ -428,6 +437,7 @@ public class SettingsFunctionTool {
             currentVolume = maxValue;
         }
         setVolume(currentVolume);
+        Log.d(TAG, "updateVolume:currentVolume update " + currentVolume);
         return currentVolume;
     }
 

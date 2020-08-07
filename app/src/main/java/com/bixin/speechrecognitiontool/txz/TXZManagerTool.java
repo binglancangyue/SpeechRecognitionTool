@@ -1,11 +1,18 @@
 package com.bixin.speechrecognitiontool.txz;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bixin.speechrecognitiontool.R;
 import com.bixin.speechrecognitiontool.SpeechApplication;
+import com.bixin.speechrecognitiontool.mode.CustomValue;
+import com.bixin.speechrecognitiontool.mode.bean.WeatherBean;
 import com.txznet.sdk.TXZConfigManager;
+import com.txznet.sdk.TXZNetDataProvider;
+import com.txznet.sdk.bean.WeatherData;
 
 import static com.txznet.sdk.TXZConfigManager.FloatToolType.FLOAT_NONE;
 
@@ -57,6 +64,7 @@ public class TXZManagerTool {
                         Log.d(TAG, "TXZ onSuccess: ");
                         AsrWakeUpInitManager.getInstance().init();
                         TXZVoiceControl txzVoiceControl = new TXZVoiceControl();
+                        getWeatherInfo();
                     }
 
                     @Override
@@ -64,6 +72,36 @@ public class TXZManagerTool {
                         Log.d(TAG, "TXZ onError: ");
                     }
                 }, null);
+    }
+
+    public static void getWeatherInfo() {
+        TXZNetDataProvider.getInstance().getWeatherInfo(new TXZNetDataProvider.NetDataCallback<WeatherData>() {
+            @Override
+            public void onResult(WeatherData weatherData) {
+                WeatherData.WeatherDay weatherDays = weatherData.weatherDays[0];
+                WeatherBean weatherBean = new WeatherBean();
+                weatherBean.setCityName(weatherData.cityName);
+                weatherBean.setCurrentTemperature(weatherDays.currentTemperature);
+                weatherBean.setWeather(weatherDays.weather);
+                String json = JSONObject.toJSONString(weatherBean);
+                sendToLauncher(json);
+                Log.d(TAG, "getWeatherInfo onResult: " + json);
+            }
+
+            @Override
+            public void onError(int i) {
+                Log.e(TAG, "onError code : " + i);
+            }
+        });
+    }
+
+    private static void sendToLauncher(String weather) {
+        Intent intent = new Intent();
+        intent.setAction(CustomValue.ACTION_UPDATE_WEATHER);
+//        intent.setComponent(new ComponentName("com.bixin.launcher_t20",
+//                "com.bixin.launcher_t20.model.receiver.WeatherReceiver"));
+        intent.putExtra("weatherInfo", weather);
+        SpeechApplication.getInstance().sendBroadcast(intent);
     }
 
 }
