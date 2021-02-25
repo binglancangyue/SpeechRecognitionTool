@@ -5,7 +5,8 @@
     package="com.bixin.speechrecognitiontool"
     android:sharedUserId="android.uid.system">
 
-    <uses-permission android:name="android.permission.INSTANT_APP_FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.INSTANT_APP_FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
@@ -25,6 +26,9 @@
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
+
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
 
     <application
         android:name=".SpeechApplication"
@@ -75,6 +79,7 @@
             android:name=".SpeechRecognitionService$AlarmWeatherReceiver"
             tools:ignore="Instantiatable" />
         <receiver android:name=".AlarmReceiver" />
+
         <receiver android:name=".StartServiceReceiver">
             <intent-filter>
                 <action android:name="com.bixin.action_start_service" />
