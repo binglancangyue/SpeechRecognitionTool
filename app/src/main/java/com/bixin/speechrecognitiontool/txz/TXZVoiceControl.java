@@ -44,7 +44,7 @@ public class TXZVoiceControl {
         registerCommand(new String[]{"打开视频回放", "打开视频"}, "CMD_OPEN_V_PLAYBACK");
 //       registerCommand(new String[]{"打开蓝牙"}, "CMD_OPEN_V_Bluetooth");
         registerCommand(new String[]{"打开电视家", "打开电视机"}, "CMD_OPEN_TV_HOME");
-//        registerCommand(new String[]{"打开FM"}, "CMD_OPEN_FM");
+        registerCommand(new String[]{"开启FM", "打开收音机", "打开FM", "进入FM"}, "CMD_OPEN_FM_STATUE");
         registerCommand(new String[]{"打开喜马拉雅"}, "CMD_OPEN_XIMALAYA");
 
 
@@ -70,6 +70,7 @@ public class TXZVoiceControl {
     }
 
     private void startApp(String data) {
+        Log.d("test", "startApp:  " + data);
         switch (data) {
             case "CMD_OPEN_APP_MGT":
 //                openApp(null);
@@ -95,8 +96,9 @@ public class TXZVoiceControl {
             case "CMD_OPEN_TV_HOME":
                 openApp(CustomValue.PACKAGE_NAME_TV_HOME);
                 break;
-            case "CMD_OPEN_FM":
+            case "CMD_OPEN_FM_STATUE":
                 openApp(CustomValue.PACKAGE_NAME_FM);
+                toSpeakText("FM已打开");
                 break;
             case "CMD_OPEN_XIMALAYA":
                 openApp(CustomValue.PACKAGE_NAME_XIMALAYA);
@@ -110,7 +112,6 @@ public class TXZVoiceControl {
     }
 
 
-
     private void sendBroadcastToLauncher(String command) {
         Intent intent = new Intent();
         intent.setAction(ACTION_TXZ_CUSTOM_COMMAND);
@@ -119,6 +120,7 @@ public class TXZVoiceControl {
     }
 
     private void openApp(String packageName) {
+        Log.d("test", "openApp: " + packageName);
         launchAppByPackageName(packageName);
     }
 

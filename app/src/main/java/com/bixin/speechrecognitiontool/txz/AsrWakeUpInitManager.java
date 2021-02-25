@@ -6,6 +6,7 @@ import android.util.Log;
 import com.bixin.speechrecognitiontool.SpeechApplication;
 import com.bixin.speechrecognitiontool.mode.CustomValue;
 import com.txznet.sdk.TXZAsrManager;
+import com.txznet.sdk.TXZPowerManager;
 import com.txznet.sdk.TXZResourceManager;
 import com.txznet.sdk.TXZTtsManager;
 
@@ -15,9 +16,8 @@ import com.txznet.sdk.TXZTtsManager;
  * 注册免唤醒命令字
  */
 public class AsrWakeUpInitManager {
-
     private static AsrWakeUpInitManager instance;
-    private String TAG = "AsrWakeUpInitManager";
+    private final String TAG = "AsrWakeUpInitManager";
 
     TXZAsrManager.AsrComplexSelectCallback asr;
 
@@ -34,8 +34,11 @@ public class AsrWakeUpInitManager {
         return instance;
     }
 
+    /**
+     * 注册同行者免唤醒指令
+     */
     public void init() {
-        Log.d("txz", "init: 免唤醒初始化");
+        Log.d(TAG, "init: 免唤醒初始化");
         asr = new TXZAsrManager.AsrComplexSelectCallback() {
             @Override
             public String getTaskId() {
@@ -50,27 +53,24 @@ public class AsrWakeUpInitManager {
             @Override
             public void onCommandSelected(String type, String command) {
                 super.onCommandSelected(type, command);
+                TXZTtsManager.getInstance().speakText("滴");
                 switch (type) {
                     case "LIGHT_DOWN":
-                        TXZTtsManager.getInstance().speakText("滴");
                         TXZResourceManager.getInstance().speakTextOnRecordWin("已为您降低亮度",
                                 true, null);
                         sendBroadCast("light.down");
                         break;
                     case "LIGHT_UP":
-                        TXZTtsManager.getInstance().speakText("滴");
                         TXZResourceManager.getInstance().speakTextOnRecordWin("已为您增加亮度",
                                 true, null);
                         sendBroadCast("light.up");
                         break;
                     case "LIGHT_MAX":
-                        TXZTtsManager.getInstance().speakText("滴");
                         TXZResourceManager.getInstance().speakTextOnRecordWin("已调至最大亮度",
                                 true, null);
                         sendBroadCast("light.max");
                         break;
                     case "LIGHT_MIN":
-                        TXZTtsManager.getInstance().speakText("滴");
                         TXZResourceManager.getInstance().speakTextOnRecordWin("已调至最小亮度",
                                 true, null);
                         sendBroadCast("light.min");
@@ -87,7 +87,7 @@ public class AsrWakeUpInitManager {
                         break;
                     case "BLUETOOTH_OPEN":
                         TXZResourceManager.getInstance().speakTextOnRecordWin("蓝牙已打开",
-                                true, null);
+                                false, null);
                         sendBroadCast("bluetooth.open");
                         break;
                     case "BLUETOOTH_CLOSE":
@@ -95,23 +95,48 @@ public class AsrWakeUpInitManager {
                                 true, null);
                         sendBroadCast("bluetooth.close");
                         break;
+                    case "VOLUME_UP":
+                        TXZResourceManager.getInstance().speakTextOnRecordWin("已为您增加音量",
+                                true, null);
+                        sendBroadCast("volume.up");
+                        break;
+                    case "VOLUME_DOWN":
+                        TXZResourceManager.getInstance().speakTextOnRecordWin("已为您降低音量",
+                                true, null);
+                        sendBroadCast("volume.down");
+                        break;
                     case "VOLUME_MAX":
-                        TXZTtsManager.getInstance().speakText("滴");
                         TXZResourceManager.getInstance().speakTextOnRecordWin("已调至最大音量",
                                 true, null);
                         sendBroadCast("volume.max");
                         break;
                     case "VOLUME_MIN":
-                        TXZTtsManager.getInstance().speakText("滴");
                         TXZResourceManager.getInstance().speakTextOnRecordWin("已调至最小音量",
                                 true, null);
                         sendBroadCast("volume.min");
                         break;
                     case "VOLUME_MUTE":
-                        TXZTtsManager.getInstance().speakText("滴");
                         TXZResourceManager.getInstance().speakTextOnRecordWin("已为您静音",
                                 true, null);
                         sendBroadCast("volume.mute");
+                        break;
+                    case "FM_CLOSE":
+                        TXZResourceManager.getInstance().speakTextOnRecordWin("FM已关闭",
+                                true, null);
+                        sendBroadCast("radio.close");
+                        break;
+                    case "FM_OPEN":
+                        TXZResourceManager.getInstance().speakTextOnRecordWin("FM已打开",
+                                false, null);
+                        sendBroadCast("radio.open");
+                        break;
+                    case "LOOK_FRONT":
+                        Log.d(TAG, "onCommandSelected LOOK_FRONT ");
+                        sendBroadCastToDVR("look_front");
+                        break;
+                    case "LOOK_BACK":
+                        Log.d(TAG, "onCommandSelected LOOK_BACK ");
+                        sendBroadCastToDVR("look_back");
                         break;
                 }
             }
@@ -120,12 +145,20 @@ public class AsrWakeUpInitManager {
                 .addCommand("LIGHT_MAX", "最大亮度")
                 .addCommand("LIGHT_MIN", "最小亮度")
                 .addCommand("VOLUME_MAX", "最大音量")
-                .addCommand("VOLUME_MUTE", "静音")
+                .addCommand("VOLUME_MUTE", "关闭音量", "关闭音量")
                 .addCommand("VOLUME_MIN", "最小音量")
+                .addCommand("VOLUME_UP", "增加音量", "提高音量")
+                .addCommand("VOLUME_DOWN", "减小音量", "降低音量")
                 .addCommand("WIFI_CLOSE", "关闭WIFI")
                 .addCommand("WIFI_OPEN", "打开WIFI")
                 .addCommand("BLUETOOTH_OPEN", "打开蓝牙")
-                .addCommand("BLUETOOTH_CLOSE", "关闭蓝牙");
+                .addCommand("BLUETOOTH_CLOSE", "关闭蓝牙")
+                .addCommand("BLUETOOTH_CLOSE", "关闭蓝牙")
+                .addCommand("BLUETOOTH_CLOSE", "关闭蓝牙")
+                .addCommand("FM_CLOSE", "关闭FM")
+                .addCommand("FM_OPEN", "打开FM", "开启FM")
+                .addCommand("LOOK_FRONT", "看前面", "打开前录", "打开前摄")
+                .addCommand("LOOK_BACK", "看后面", "打开后录", "打开后摄");
         TXZAsrManager.getInstance().useWakeupAsAsr(asr);
     }
 
@@ -134,8 +167,14 @@ public class AsrWakeUpInitManager {
     }
 
     private void sendBroadCast(String type) {
-        Intent intent = new Intent(CustomValue.ACTION_TXZ_SEND);
+        Intent intent = new Intent(CustomValue.ACTION_SPEECH_TOOL_CMD);
         intent.putExtra("action", type);
+        SpeechApplication.getInstance().sendBroadcast(intent);
+    }
+
+    private void sendBroadCastToDVR(String type) {
+        Intent intent = new Intent(CustomValue.ACTION_SPEECH_TOOL_CMD);
+        intent.putExtra("type", type);
         SpeechApplication.getInstance().sendBroadcast(intent);
     }
 

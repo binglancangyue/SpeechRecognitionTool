@@ -19,8 +19,12 @@ public class CustomValue {
     public static final String PACKAGE_NAME_LAUNCHER = "com.bixin.launcher_t20";
     public static final String PACKAGE_NAME_ACTIVITY = PACKAGE_NAME_LAUNCHER + ".activity" +
             ".AppListActivity";
+    public static final String ACTION_SPEECH_TOOL_CMD = "com.bixin.speechrecognitiontool.action_cmd";
     public final static String ACTION_OPEN_TXZ_VIEW = "com.bixin.launcher_t20.txz.open";
     public final static String ACTION_UPDATE_WEATHER = "com.bixin.speechrecognitiontool.action_update_weather";
     public final static String ACTION_GET_WEATHER = "com.bixin.speechrecognitiontool.action_get_weather";
+    public final static String ACTION_OPEN_OR_CLOSE_TXZ = "com.bixin.launcher_t20.action.txz.openOrClose";
+    public static final String SYSTEM_SLEEP = "com.bx.action.system_sleep";
+    public static final String SYSTEM_WAKE_UP = "com.bx.action.system_wake_up";
 
 }

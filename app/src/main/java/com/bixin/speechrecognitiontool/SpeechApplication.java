@@ -1,15 +1,14 @@
 package com.bixin.speechrecognitiontool;
 
+import android.app.Application;
 import android.util.Log;
-
-import androidx.multidex.MultiDexApplication;
 
 /**
  * @author Altair
  * @date :2020.03.23 上午 10:36
  * @description:
  */
-public class SpeechApplication extends MultiDexApplication {
+public class SpeechApplication extends Application {
     private static SpeechApplication mApplication;
 
     @Override

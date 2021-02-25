@@ -1,9 +1,12 @@
 package com.bixin.speechrecognitiontool.txz;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bixin.speechrecognitiontool.R;
@@ -11,8 +14,12 @@ import com.bixin.speechrecognitiontool.SpeechApplication;
 import com.bixin.speechrecognitiontool.mode.CustomValue;
 import com.bixin.speechrecognitiontool.mode.bean.WeatherBean;
 import com.txznet.sdk.TXZConfigManager;
+import com.txznet.sdk.TXZNavManager;
 import com.txznet.sdk.TXZNetDataProvider;
 import com.txznet.sdk.bean.WeatherData;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.txznet.sdk.TXZConfigManager.FloatToolType.FLOAT_NONE;
 
@@ -24,22 +31,23 @@ import static com.txznet.sdk.TXZConfigManager.FloatToolType.FLOAT_NONE;
 public class TXZManagerTool {
     private static final String TAG = "TXZTool";
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void iniTxz() {
         Context context = SpeechApplication.getInstance();
         //  获取接入分配的appId和appToken
-        String appId = context.getResources().getString(
+        final String appId = context.getResources().getString(
                 R.string.txz_sdk_init_app_id);
-        String appToken = context.getResources().getString(
+        final String appToken = context.getResources().getString(
                 R.string.txz_sdk_init_app_token);
         //  设置初始化参数
         TXZConfigManager.InitParam mInitParam = new TXZConfigManager.InitParam(appId, appToken);
         //  可以设置自己的客户ID，同行者后台协助计数/鉴权
         // mInitParam.setAppCustomId("ABCDEFG");
         //  可以设置自己的硬件唯一标识码
-        // mInitParam.setUUID("0123456789");
+//         mInitParam.setUUID(getIMEIforO());
 
         // 掩藏语音按钮
-        mInitParam.setFloatToolType(FLOAT_NONE);
+        mInitParam.setFloatToolType(TXZConfigManager.FloatToolType.FLOAT_NONE);
 //        //  可以按需要设置自己的对话模式
 //        mInitParam.setAsrMode(TXZConfigManager.AsrMode.ASR_MODE_CHAT);
 //        //  设置识别模式，默认自动模式即可
@@ -57,6 +65,7 @@ public class TXZManagerTool {
         String[] wakeupKeywords = context.getResources().getStringArray(
                 R.array.txz_sdk_init_wakeup_keywords);
         mInitParam.setWakeupKeywordsNew(wakeupKeywords);
+//        TXZNavManager.getInstance().setNavDefaultTool(TXZNavManager.NavToolType.NAV_TOOL_KAILIDE_NAV);
         TXZConfigManager.getInstance().initialize(context, mInitParam,
                 new TXZConfigManager.InitListener() {
                     @Override
@@ -64,7 +73,17 @@ public class TXZManagerTool {
                         Log.d(TAG, "TXZ onSuccess: ");
                         AsrWakeUpInitManager.getInstance().init();
                         TXZVoiceControl txzVoiceControl = new TXZVoiceControl();
-                        getWeatherInfo();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(10000);
+                                    getWeatherInfo();
+`                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).start();
                     }
 
                     @Override
@@ -72,6 +91,14 @@ public class TXZManagerTool {
                         Log.d(TAG, "TXZ onError: ");
                     }
                 }, null);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String getIMEIforO() {
+        TelephonyManager tm = ((TelephonyManager) SpeechApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE));
+        String imei1 = tm.getImei(0);
+        Log.d(TAG, "getIMEIforO: " + imei1);
+        return imei1;
     }
 
     public static void getWeatherInfo() {

@@ -36,7 +36,7 @@ public class SpeechRecognitionService extends Service {
     private static final String TAG = "SpeechService";
     private TXZBroadcastReceiver mTxzBroadcastReceiver;
     private int Time = 1000 * 3;//周期时间
-    private final static int anHour = 60 * 60 * 1000;// 这是8小时的毫秒数 为了少消耗流量和电量，8小时自动更新一次
+    private final static int anHour = 60 * 60 * 1000;
     private AlarmManager manager;
     private PendingIntent pi;
     private AlarmWeatherReceiver alarmReceiver;
@@ -69,6 +69,9 @@ public class SpeechRecognitionService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    /**
+     * 定时获取同行者天气,时钟
+     */
     private void initUpdateWeatherAlarm() {
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
         Intent i = new Intent(this, AlarmReceiver.class);
@@ -87,6 +90,9 @@ public class SpeechRecognitionService extends Service {
         intentFilter.addAction(CustomValue.ACTION_TXZ_SEND);
         intentFilter.addAction(CustomValue.ACTION_OPEN_TXZ_VIEW);
         intentFilter.addAction(CustomValue.ACTION_GET_WEATHER);
+        intentFilter.addAction(CustomValue.ACTION_OPEN_OR_CLOSE_TXZ);
+        intentFilter.addAction(CustomValue.SYSTEM_WAKE_UP);
+        intentFilter.addAction(CustomValue.SYSTEM_SLEEP);
         registerReceiver(mTxzBroadcastReceiver, intentFilter);
     }
 

@@ -3,8 +3,6 @@ package com.bixin.speechrecognitiontool.txz;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
-import android.car.ContextDef;
-import android.car.FmManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +17,13 @@ import android.util.Log;
 
 import com.bixin.speechrecognitiontool.SpeechApplication;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -36,9 +41,10 @@ public class SettingsFunctionTool {
     private AudioManager audioManager;
     private final float baseValue = 2.55f;//0-255
     private BluetoothAdapter bluetoothAdapter;
-    private FmManager mFmManager;
     private static final String TAG = "SettingsFunctionTool";
     private WifiManager mWifiManager;
+    public static final String fm_power_path = "/sys/class/QN8027/QN8027/power_state";
+
 
     public SettingsFunctionTool(Context mContext) {
         this.mContext = mContext;
@@ -54,7 +60,6 @@ public class SettingsFunctionTool {
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mFmManager = (FmManager) getSystemService(mContext, ContextDef.FM_SERVICE);
         mWifiManager = (WifiManager) mContext.getApplicationContext().
                 getSystemService(Context.WIFI_SERVICE);
     }
@@ -275,33 +280,6 @@ public class SettingsFunctionTool {
         return context.getSystemService(name);
     }
 
-    public void openOrCloseFM(boolean isOpen) {
-        if (isOpen) {
-            Log.d(TAG, "openOrCloseFM: on");
-            if (!getFMStatus()) {
-                mFmManager.turnOn();
-            }
-        } else {
-            Log.d(TAG, "openOrCloseFM: off");
-            mFmManager.turnOff();
-        }
-    }
-
-    public boolean getFMStatus() {
-        int status = mFmManager.getState();
-        if (status == 0) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public int getFMState() {
-        int status = mFmManager.getState();
-        return status;
-    }
-
-
     /**
      * 设置息屏或屏保时间
      * 管理器方式
@@ -481,6 +459,63 @@ public class SettingsFunctionTool {
         if (mWifiManager != null && isWifiEnable()) {
             mWifiManager.disconnect();
             mWifiManager.setWifiEnabled(false);
+        }
+    }
+
+    public void openOrCloseFM(boolean isOpen) {
+        if (isOpen) {
+            Log.d(TAG, "openOrCloseFM: on");
+            if (!getFmStatus()) {
+                openFm();
+            }
+        } else {
+            Log.d(TAG, "openOrCloseFM: off");
+            closeFm();
+        }
+    }
+
+    public boolean getFmStatus() {
+        boolean isOpen = false;
+        BufferedReader reader;
+        String prop;
+        try {
+            reader = new BufferedReader(new FileReader(new File(fm_power_path)));
+            prop = reader.readLine();
+            if (prop.equals("1")) {
+                isOpen = true;
+            }
+            Log.d(TAG, "getFmStatus:prop " + prop);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return isOpen;
+    }
+
+
+    private void openFm() {
+        try {
+            Writer fm_power = new FileWriter(fm_power_path);
+            fm_power.write("on");
+            fm_power.close();
+            Log.d(TAG, "openFm:on ");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG, "closeFm: " + e.getMessage());
+        }
+    }
+
+    private void closeFm() {
+        try {
+            Writer fm_power = new FileWriter(fm_power_path);
+            fm_power.write("off");
+            fm_power.flush();
+            fm_power.close();
+            Log.d(TAG, "openFm:on off");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG, "closeFm: " + e.getMessage());
         }
     }
 
