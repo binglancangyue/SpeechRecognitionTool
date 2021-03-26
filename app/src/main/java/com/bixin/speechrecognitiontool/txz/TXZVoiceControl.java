@@ -42,7 +42,7 @@ public class TXZVoiceControl {
         registerCommand(new String[]{"打开文件管理", "打开文件管理器"}, "CMD_OPEN_FILE_MGT");
         registerCommand(new String[]{"打开记录仪", "打开行车记录仪"}, "CMD_OPEN_CAMERA_MGT");
         registerCommand(new String[]{"打开视频回放", "打开视频"}, "CMD_OPEN_V_PLAYBACK");
-//       registerCommand(new String[]{"打开蓝牙"}, "CMD_OPEN_V_Bluetooth");
+        registerCommand(new String[]{"打开蓝牙"}, "CMD_OPEN_V_Bluetooth");
         registerCommand(new String[]{"打开电视家", "打开电视机"}, "CMD_OPEN_TV_HOME");
         registerCommand(new String[]{"开启FM", "打开收音机", "打开FM", "进入FM"}, "CMD_OPEN_FM_STATUE");
         registerCommand(new String[]{"打开喜马拉雅"}, "CMD_OPEN_XIMALAYA");
@@ -89,10 +89,10 @@ public class TXZVoiceControl {
                 openApp(CustomValue.PACKAGE_NAME_ViDEO_PLAY_BACK);
                 toSpeakText("视频回放已打开");
                 break;
-//                    case "CMD_OPEN_V_BLUETOOTH":
-//                        openApp(CustomValue.PACKAGE_NAME_BLUETOOTH);
-//                        toSpeakText("蓝牙已打开");
-//                        break;
+            case "CMD_OPEN_V_BLUETOOTH":
+                openApp(CustomValue.PACKAGE_NAME_BLUETOOTH);
+                toSpeakText("蓝牙已打开");
+                break;
             case "CMD_OPEN_TV_HOME":
                 openApp(CustomValue.PACKAGE_NAME_TV_HOME);
                 break;

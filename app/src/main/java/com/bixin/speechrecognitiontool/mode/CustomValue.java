@@ -26,5 +26,6 @@ public class CustomValue {
     public final static String ACTION_OPEN_OR_CLOSE_TXZ = "com.bixin.launcher_t20.action.txz.openOrClose";
     public static final String SYSTEM_SLEEP = "com.bx.action.system_sleep";
     public static final String SYSTEM_WAKE_UP = "com.bx.action.system_wake_up";
+    public static final String PACKAGE_NAME_BLUETOOTH = "com.bixin.bluetooth"; // 蓝牙
 
 }

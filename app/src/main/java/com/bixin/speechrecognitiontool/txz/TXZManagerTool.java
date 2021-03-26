@@ -79,7 +79,7 @@ public class TXZManagerTool {
                                 try {
                                     Thread.sleep(10000);
                                     getWeatherInfo();
-`                                } catch (InterruptedException e) {
+                                } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
                             }

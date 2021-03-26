@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release_key {
+            storeFile file('E:\\AndroidStudioWork\\SpeechRecognitionTool\\release.keystore')
+            keyAlias 'SpeechRecognitionTool'
+            storePassword '565405388'
+            keyPassword '565405388'
+        }
+    }
     compileSdkVersion 28
     buildToolsVersion '29.0.3'
 
@@ -11,7 +19,7 @@ android {
         targetSdkVersion 27
         versionCode 1
 //        multiDexEnabled true
-        versionName '1.0.210225.1'
+        versionName '1.0.210326.1'
     }
 
     buildTypes {
@@ -26,7 +34,7 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
-    ndkVersion '22.0.7026061'
+    ndkVersion '22.1.7171670'
 
 }
 

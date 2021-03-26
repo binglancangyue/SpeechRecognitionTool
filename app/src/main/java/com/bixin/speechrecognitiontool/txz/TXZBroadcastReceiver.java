@@ -3,9 +3,11 @@ package com.bixin.speechrecognitiontool.txz;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.bixin.speechrecognitiontool.R;
 import com.bixin.speechrecognitiontool.SpeechApplication;
 import com.bixin.speechrecognitiontool.mode.CustomValue;
 import com.txznet.sdk.TXZAsrManager;
@@ -94,12 +96,12 @@ public class TXZBroadcastReceiver extends BroadcastReceiver {
                         break;
                     case "go.home":
                         sendToActivity(5, 0);
-                    case "bluetooth.open":
-                        sendToActivity(6, 1);
-                        break;
-                    case "bluetooth.close":
-                        sendToActivity(6, 0);
-                        break;
+//                    case "bluetooth.open":
+//                        sendToActivity(6, 1);
+//                        break;
+//                    case "bluetooth.close":
+//                        sendToActivity(6, 0);
+//                        break;
                     case "radio.open":
                         sendToActivity(7, 1);
                         break;
@@ -144,6 +146,7 @@ public class TXZBroadcastReceiver extends BroadcastReceiver {
         switch (type) {
             case 1:
                 settingsFunctionTool.updateBrightness(value);
+                break;
             case 2:
                 settingsFunctionTool.updateVolume(value);
                 break;
@@ -208,6 +211,26 @@ public class TXZBroadcastReceiver extends BroadcastReceiver {
             TXZPowerManager.getInstance().reinitTXZ();
         } else {
             TXZPowerManager.getInstance().releaseTXZ();
+        }
+    }
+
+    /**
+     * 根据包名启动应用
+     *
+     * @param packageName clicked app
+     */
+    private void launchAppByPackageName(String packageName) {
+        if (TextUtils.isEmpty(packageName)) {
+            Log.i("TAG", "package name is null!");
+            return;
+        }
+        Context context = SpeechApplication.getInstance();
+        Intent launchIntent =
+                context.getPackageManager().getLaunchIntentForPackage(packageName);
+        if (launchIntent == null) {
+            ToastTool.showToast(R.string.app_not_install);
+        } else {
+            context.startActivity(launchIntent);
         }
     }
 

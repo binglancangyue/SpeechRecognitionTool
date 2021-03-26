@@ -44,7 +44,8 @@ public class SettingsFunctionTool {
     private static final String TAG = "SettingsFunctionTool";
     private WifiManager mWifiManager;
     public static final String fm_power_path = "/sys/class/QN8027/QN8027/power_state";
-
+    public static final String FM_STATE = "bx_fm_state";
+    public static final String BX_HEADSET_PATH = "/sys/kernel/headset/state";
 
     public SettingsFunctionTool(Context mContext) {
         this.mContext = mContext;
@@ -467,10 +468,12 @@ public class SettingsFunctionTool {
             Log.d(TAG, "openOrCloseFM: on");
             if (!getFmStatus()) {
                 openFm();
+                setFmState("on");
             }
         } else {
             Log.d(TAG, "openOrCloseFM: off");
             closeFm();
+            setFmState("off");
         }
     }
 
@@ -494,11 +497,15 @@ public class SettingsFunctionTool {
     }
 
 
-    private void openFm() {
+    public void openFm() {
         try {
+//            updateFMState(true);
             Writer fm_power = new FileWriter(fm_power_path);
             fm_power.write("on");
+            fm_power.flush();
             fm_power.close();
+            setSpeakerphoneOn(false);
+            Settings.Global.putInt(mContext.getContentResolver(), FM_STATE, 1);
             Log.d(TAG, "openFm:on ");
         } catch (IOException e) {
             e.printStackTrace();
@@ -506,16 +513,55 @@ public class SettingsFunctionTool {
         }
     }
 
-    private void closeFm() {
+    public void closeFm() {
         try {
+//            updateFMState(false);
             Writer fm_power = new FileWriter(fm_power_path);
             fm_power.write("off");
             fm_power.flush();
             fm_power.close();
+            setSpeakerphoneOn(true);
+            Settings.Global.putInt(mContext.getContentResolver(), FM_STATE, 0);
             Log.d(TAG, "openFm:on off");
         } catch (IOException e) {
             e.printStackTrace();
             Log.e(TAG, "closeFm: " + e.getMessage());
+        }
+    }
+
+    public void setSpeakerphoneOn(boolean b) {
+        if (audioManager != null) {
+            if (!b) {
+                audioManager.setParameters("fm=1");
+                Log.d(TAG, "setSpeakerphoneOn: fm=1");
+            } else {
+                audioManager.setMode(AudioManager.MODE_NORMAL);
+                audioManager.setParameters("fm=0");
+                Log.d(TAG, "setSpeakerphoneOn: fm=0");
+            }
+            audioManager.setSpeakerphoneOn(b);
+            Log.d(TAG, "setSpeakerphoneOn: " + b);
+        }
+    }
+
+    public void setFmState(String value) {
+        Writer fmState = null;
+        try {
+            fmState = new FileWriter(BX_HEADSET_PATH);
+            fmState.write(value);
+            fmState.flush();
+            Log.d(TAG, "setFmState:value " + value);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG, "setFmState: " + e.getMessage());
+        } finally {
+            if (fmState != null) {
+                try {
+                    fmState.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

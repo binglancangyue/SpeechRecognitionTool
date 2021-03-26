@@ -1,6 +1,7 @@
 package com.bixin.speechrecognitiontool.txz;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.bixin.speechrecognitiontool.SpeechApplication;
@@ -10,6 +11,8 @@ import com.txznet.sdk.TXZPowerManager;
 import com.txznet.sdk.TXZResourceManager;
 import com.txznet.sdk.TXZTtsManager;
 
+import static android.content.ContentValues.TAG;
+
 
 /**
  * Created by TownDream on 2020/7/31.
@@ -18,6 +21,8 @@ import com.txznet.sdk.TXZTtsManager;
 public class AsrWakeUpInitManager {
     private static AsrWakeUpInitManager instance;
     private final String TAG = "AsrWakeUpInitManager";
+    public static final String APP_BX_BT = "com.bixin.bluetooth";
+    public static final String APP_E_GOD = "com.hdsc.edog";
 
     TXZAsrManager.AsrComplexSelectCallback asr;
 
@@ -88,12 +93,14 @@ public class AsrWakeUpInitManager {
                     case "BLUETOOTH_OPEN":
                         TXZResourceManager.getInstance().speakTextOnRecordWin("蓝牙已打开",
                                 false, null);
-                        sendBroadCast("bluetooth.open");
+//                        sendBroadCast("bxbluetooth.open");
+                        launchAppByPackageName(APP_BX_BT);
                         break;
                     case "BLUETOOTH_CLOSE":
                         TXZResourceManager.getInstance().speakTextOnRecordWin("蓝牙已关闭",
                                 true, null);
-                        sendBroadCast("bluetooth.close");
+                        sendBroadCastToDVR("bt_close");
+//                        sendBroadCast("bxbluetooth.close");
                         break;
                     case "VOLUME_UP":
                         TXZResourceManager.getInstance().speakTextOnRecordWin("已为您增加音量",
@@ -138,6 +145,17 @@ public class AsrWakeUpInitManager {
                         Log.d(TAG, "onCommandSelected LOOK_BACK ");
                         sendBroadCastToDVR("look_back");
                         break;
+                    case "E_DOG_OPEN":
+                        Log.d(TAG, "onCommandSelected DOG_OPEN ");
+                        launchAppByPackageName(APP_E_GOD);
+                        break;
+                    case "E_DOG_CLOSE":
+                        Log.d(TAG, "onCommandSelected DOG_CLOSE ");
+                        break;
+                    case "DVR_CLOSE":
+                        Log.d(TAG, "onCommandSelected DVR_CLOSE ");
+                        sendBroadCastToDVR("dvr_close");
+                        break;
                 }
             }
         }.addCommand("LIGHT_DOWN", "降低亮度", "减小亮度")
@@ -153,12 +171,15 @@ public class AsrWakeUpInitManager {
                 .addCommand("WIFI_OPEN", "打开WIFI")
                 .addCommand("BLUETOOTH_OPEN", "打开蓝牙")
                 .addCommand("BLUETOOTH_CLOSE", "关闭蓝牙")
-                .addCommand("BLUETOOTH_CLOSE", "关闭蓝牙")
-                .addCommand("BLUETOOTH_CLOSE", "关闭蓝牙")
                 .addCommand("FM_CLOSE", "关闭FM")
                 .addCommand("FM_OPEN", "打开FM", "开启FM")
                 .addCommand("LOOK_FRONT", "看前面", "打开前录", "打开前摄")
-                .addCommand("LOOK_BACK", "看后面", "打开后录", "打开后摄");
+                .addCommand("LOOK_BACK", "看后面", "打开后录", "打开后摄")
+//                .addCommand("LOOK_DOUBLE_VIEW", "打开双屏预览")
+                .addCommand("E_DOG_OPEN", "打开电子狗")
+//                .addCommand("E_DOG_CLOSE", "关闭电子狗")
+//                .addCommand("DVR_OPEN", "打开记录仪")
+                .addCommand("DVR_CLOSE", "关闭记录仪");
         TXZAsrManager.getInstance().useWakeupAsAsr(asr);
     }
 
@@ -167,7 +188,7 @@ public class AsrWakeUpInitManager {
     }
 
     private void sendBroadCast(String type) {
-        Intent intent = new Intent(CustomValue.ACTION_SPEECH_TOOL_CMD);
+        Intent intent = new Intent(CustomValue.ACTION_TXZ_SEND);
         intent.putExtra("action", type);
         SpeechApplication.getInstance().sendBroadcast(intent);
     }
@@ -178,4 +199,22 @@ public class AsrWakeUpInitManager {
         SpeechApplication.getInstance().sendBroadcast(intent);
     }
 
+    /**
+     * 根据包名启动应用
+     *
+     * @param packageName clicked app
+     */
+    private void launchAppByPackageName(String packageName) {
+        if (TextUtils.isEmpty(packageName)) {
+            Log.i(TAG, "package name is null!");
+            return;
+        }
+        Intent launchIntent = SpeechApplication.getInstance().
+                getPackageManager().getLaunchIntentForPackage(packageName);
+        if (launchIntent == null) {
+            Log.i(TAG, "app not install");
+        } else {
+            SpeechApplication.getInstance().startActivity(launchIntent);
+        }
+    }
 }

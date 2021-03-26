@@ -9,8 +9,10 @@
     <string-array name="txz_sdk_init_wakeup_keywords">
         <item>@string/txz_wake_up_name</item>
     </string-array>
+                                    <!--收费id-->
 <!--    <string name="txz_sdk_init_app_id">0a705ed01863ed582f80e4dce1cb83ba</string>
     <string name="txz_sdk_init_app_token">b5aff18fc8bbbbb17585444645e378d7442434cb</string>-->
+                                    <!--免费id-->
     <string name="txz_sdk_init_app_id">e19869788ad33f42e45bfb9c2fe76ce7</string>
     <string name="txz_sdk_init_app_token">a74a4d5e7d76da0af9caaa03243e74a75a396367</string>
 </resources>
