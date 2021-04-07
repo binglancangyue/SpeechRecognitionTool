@@ -8,18 +8,24 @@ android {
             storePassword '565405388'
             keyPassword '565405388'
         }
+        release_key_android_10 {
+            storeFile file('E:\\AndroidStudioWork\\SpeechRecognitionTool\\release_android10.keystore')
+            keyAlias 'SpeechRecognitionTool'
+            storePassword '565405388'
+            keyPassword '565405388'
+        }
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion '29.0.3'
 
     defaultConfig {
         applicationId "com.bixin.speechrecognitiontool"
         minSdkVersion 23
         //noinspection OldTargetApi
-        targetSdkVersion 27
+        targetSdkVersion 29
         versionCode 1
 //        multiDexEnabled true
-        versionName '1.0.210326.1'
+        versionName '1.0.210407.1'
     }
 
     buildTypes {
