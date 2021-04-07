@@ -33,19 +33,6 @@ public class TXZBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         Log.d(TAG, "onReceive:action " + action);
-//        if (action != null && action.equals()) {
-//
-//        }
-//        if (action.equals(ACTION_OPEN_TXZ_VIEW)) {
-//            openTXZView();
-//        }
-//        if (action.equals(CustomValue.ACTION_GET_WEATHER)) {
-//            TXZManagerTool.getWeatherInfo();
-//        }
-//        if (action.equals(CustomValue.ACTION_OPEN_OR_CLOSE_TXZ)) {
-//            boolean isOpen = intent.getBooleanExtra("is_open", true);
-//            openOrClose(isOpen);
-//        }
         switch (action) {
             case CustomValue.ACTION_TXZ_SEND:
                 String actionString = intent.getStringExtra("action");
@@ -129,19 +116,6 @@ public class TXZBroadcastReceiver extends BroadcastReceiver {
         }
     }
 
-    //    private void sendToActivity(int type, int value) {
-//        Intent intent = new Intent();
-//        intent.setAction(CustomValue.ACTION_SEND_TO_SYSTEM_UI);
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("key_type", type);
-//        bundle.putInt("key_value", value);
-//        intent.putExtras(bundle);
-//        if (Build.VERSION.SDK_INT >= 27) {
-//            intent.setComponent(new ComponentName("com.android.systemui",
-//                    "com.android.systemui.activity.TXZBroadcastReceiver"));
-//        }
-//        SpeechApplication.getInstance().sendBroadcast(intent);
-//    }
     private void sendToActivity(int type, int value) {
         switch (type) {
             case 1:
