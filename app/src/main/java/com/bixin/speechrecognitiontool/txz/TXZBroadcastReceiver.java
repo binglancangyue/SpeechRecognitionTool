@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 
 import com.bixin.speechrecognitiontool.R;
 import com.bixin.speechrecognitiontool.SpeechApplication;
@@ -13,8 +12,6 @@ import com.bixin.speechrecognitiontool.mode.CustomValue;
 import com.txznet.sdk.TXZAsrManager;
 import com.txznet.sdk.TXZConfigManager;
 import com.txznet.sdk.TXZPowerManager;
-
-import static com.bixin.speechrecognitiontool.mode.CustomValue.ACTION_OPEN_TXZ_VIEW;
 
 /**
  * @author Altair

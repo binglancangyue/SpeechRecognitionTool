@@ -33,12 +33,27 @@ public class TXZManagerTool {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void iniTxz() {
+        Log.d(TAG, "iniTxz: ");
         Context context = SpeechApplication.getInstance();
         //  获取接入分配的appId和appToken
-        final String appId = context.getResources().getString(
-                R.string.txz_sdk_init_app_id);
-        final String appToken = context.getResources().getString(
-                R.string.txz_sdk_init_app_token);
+        final String appId;
+        final String appToken;
+        if (CustomValue.USER_ID_TYPE == 0) {
+            appId = context.getResources().getString(
+                    R.string.txz_sdk_init_app_id_old);
+            appToken = context.getResources().getString(
+                    R.string.txz_sdk_init_app_token_old);
+        } else if (CustomValue.USER_ID_TYPE == 2) {
+            appId = context.getResources().getString(
+                    R.string.txz_sdk_init_app_id_free);
+            appToken = context.getResources().getString(
+                    R.string.txz_sdk_init_app_token_free);
+        } else {
+            appId = context.getResources().getString(
+                    R.string.txz_sdk_init_app_id);
+            appToken = context.getResources().getString(
+                    R.string.txz_sdk_init_app_token);
+        }
         //  设置初始化参数
         TXZConfigManager.InitParam mInitParam = new TXZConfigManager.InitParam(appId, appToken);
         //  可以设置自己的客户ID，同行者后台协助计数/鉴权
@@ -65,6 +80,10 @@ public class TXZManagerTool {
         String[] wakeupKeywords = context.getResources().getStringArray(
                 R.array.txz_sdk_init_wakeup_keywords);
         mInitParam.setWakeupKeywordsNew(wakeupKeywords);
+        if (CustomValue.USER_ID_TYPE == 1) {
+            //TODO 设置UUID 需配合最新收费id使用
+            mInitParam.setUUID("565405388");
+        }
 //        TXZNavManager.getInstance().setNavDefaultTool(TXZNavManager.NavToolType.NAV_TOOL_KAILIDE_NAV);
         TXZConfigManager.getInstance().initialize(context, mInitParam,
                 new TXZConfigManager.InitListener() {
@@ -88,7 +107,7 @@ public class TXZManagerTool {
 
                     @Override
                     public void onError(int i, String s) {
-                        Log.d(TAG, "TXZ onError: ");
+                        Log.d(TAG, "TXZ onError:code " + i + " s:" + s);
                     }
                 }, null);
     }

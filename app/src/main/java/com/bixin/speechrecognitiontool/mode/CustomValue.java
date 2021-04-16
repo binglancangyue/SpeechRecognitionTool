@@ -27,5 +27,5 @@ public class CustomValue {
     public static final String SYSTEM_SLEEP = "com.bx.action.system_sleep";
     public static final String SYSTEM_WAKE_UP = "com.bx.action.system_wake_up";
     public static final String PACKAGE_NAME_BLUETOOTH = "com.bixin.bluetooth"; // 蓝牙
-
+    public static final int USER_ID_TYPE = 1;//0:最初收付id 1:最新收费id 2:免费id
 }

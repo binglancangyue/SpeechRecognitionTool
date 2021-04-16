@@ -7,11 +7,8 @@ import android.util.Log;
 import com.bixin.speechrecognitiontool.SpeechApplication;
 import com.bixin.speechrecognitiontool.mode.CustomValue;
 import com.txznet.sdk.TXZAsrManager;
-import com.txznet.sdk.TXZPowerManager;
 import com.txznet.sdk.TXZResourceManager;
 import com.txznet.sdk.TXZTtsManager;
-
-import static android.content.ContentValues.TAG;
 
 
 /**
